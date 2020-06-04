@@ -191,7 +191,7 @@ const actions = {
 
 The <samp>app</samp> function returns a copy of your actions where every function is wired to changes in the state. Exposing this object to the outside world can be useful to operate your application from another program or framework, subscribe to global events, listen to mouse and keyboard input, etc.
 
-To see this in action, modify the example from [Getting Started](#getting-started) to save the wired actions to a variable and try using them. You should see the counter update accordingly.
+To see this in action, modify the example from [Getting Started](#getting-started) to save the wired actions to a constiable and try using them. You should see the counter update accordingly.
 
 ```jsx
 const main = app(state, actions, view, document.body)
@@ -387,7 +387,7 @@ Supported attributes include [HTML attributes](https://developer.mozilla.org/en-
 ### Styles
 
 The <samp>style</samp> attribute expects a plain object rather than a string as in HTML.
-Each declaration consists of a style name property written in <samp>camelCase</samp> and a value. CSS variables are supported too.
+Each declaration consists of a style name property written in <samp>camelCase</samp> and a value. CSS constiables are supported too.
 
 Individual style properties will be diffed and mapped against <samp>[HTMLElement.style](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/style)</samp> property members of the DOM element - you should therefore use the JavaScript style object [property names](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Properties_Reference), e.g. <samp>backgroundColor</samp> rather than <samp>background-color</samp>.
 
