@@ -87,12 +87,12 @@ export interface View<State, Actions> {
  * @returns The actions wired to the application.
  * @memberOf [App]
  */
-export function app<State, Actions>(
+export default function <State, Actions>(
   state: State,
   actions: ActionsType<State, Actions>,
   view: View<State, Actions>,
   container: Element | null
-): Actions
+): Promise<Actions>
 
 /** @namespace [JSX] */
 
