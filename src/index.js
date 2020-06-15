@@ -25,17 +25,24 @@ export default async (state, actions, view, container) => {
   }
 
   const render = () => {
-    skipRender = !skipRender
+    try {
+      skipRender = !skipRender
 
-    const node = resolveNode(view)
+      const node = resolveNode(view)
 
-    if (container && !skipRender) {
-      rootElement = patch(container, rootElement, oldNode, (oldNode = node))
+      if (container && !skipRender) {
+        rootElement = patch(container, rootElement, oldNode, (oldNode = node))
+      }
+
+      isRecycling = false
+
+      while (lifecycle.length) lifecycle.pop()()
+    } catch (error) {
+      if (wiredActions.errorHandler) {
+        wiredActions.errorHandler({ error, functionName: 'render' })
+      }
+      throw error
     }
-
-    isRecycling = false
-
-    while (lifecycle.length) lifecycle.pop()()
   }
 
   const scheduleRender = () => {
@@ -74,32 +81,44 @@ export default async (state, actions, view, container) => {
     return source
   }
 
-  const wireStateToActions = async (path, state, actions) => {
+  const wireStateToActions = (path, state, actions) => {
     for (const key in actions) {
       typeof actions[key] === 'function'
-        ? (async function (key, action) {
+        ? (function (key, action) {
           actions[key] = async function (data) {
-            let result = await action(data)
+            try {
+              let result
+              if (action.constructor.name === 'AsyncFunction') {
+                result = await action(data)
+              } else {
+                result = action(data)
+              }
 
-            if (typeof result === 'function') {
-              result = result(getPartialState(path, globalState), actions)
+              if (typeof result === 'function' && result.constructor.name === 'AsyncFunction') {
+                result = await result(getPartialState(path, globalState), actions)
+              } else if (typeof result === 'function') {
+                result = result(getPartialState(path, globalState), actions)
+              }
+
+              if (
+                result &&
+                result !== (state = getPartialState(path, globalState))
+              ) {
+                scheduleRender(
+                  (globalState = setPartialState(
+                    path,
+                    clone(state, result),
+                    globalState
+                  ))
+                )
+              }
+              return result
+            } catch (error) {
+              if (wiredActions.errorHandler) {
+                wiredActions.errorHandler({ error, functionName: key })
+              }
+              throw error
             }
-
-            if (
-              result &&
-                result !== (state = getPartialState(path, globalState)) &&
-                !result.then // !isPromise
-            ) {
-              scheduleRender(
-                (globalState = setPartialState(
-                  path,
-                  clone(state, result),
-                  globalState
-                ))
-              )
-            }
-
-            return result
           }
         })(key, actions[key])
         : wireStateToActions(
