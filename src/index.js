@@ -104,6 +104,9 @@ export default async (state, actions, view, container) => {
                 result &&
                 result !== (state = getPartialState(path, globalState))
               ) {
+                if (wiredActions.stateChangeHandler) {
+                  wiredActions.stateChangeHandler({ result, key, path })
+                }
                 scheduleRender(
                   (globalState = setPartialState(
                     path,
