@@ -143,7 +143,7 @@ export default async (state, actions, view, container) => {
   }
 
   const updateAttribute = (element, name, value, oldValue, isSvg) => {
-    if (name === 'key') {
+    if (!element || name === 'key') {
     } else if (name === 'style') {
       if (typeof value === 'string') {
         element.style.cssText = value
@@ -300,7 +300,7 @@ export default async (state, actions, view, container) => {
       element = newElement
     } else if (oldNode.nodeName == null) {
       element.nodeValue = node
-    } else {
+    } else if (element) {
       updateElement(
         element,
         oldNode.attributes,
