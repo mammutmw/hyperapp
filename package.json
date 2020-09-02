@@ -1,20 +1,19 @@
 {
-  "name": "hyperapp",
-  "description": "1 kB JavaScript micro-framework for building declarative web applications.",
-  "version": "1.2.10",
-  "main": "dist/hyperapp.js",
-  "module": "src/index.js",
-  "typings": "hyperapp.d.ts",
+  "name": "ramverk1",
+  "description": "1 kB JavaScript micro-framework for building declarative web applications. Fork of hyperapp v1.",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "type": "module",
+  "typings": "ramverk1.d.ts",
   "license": "MIT",
-  "repository": "jorgebucaran/hyperapp",
-  "homepage": "https://hyperapp.js.org",
+  "repository": "mammutmw/ramverk1",
   "files": [
     "src",
     "dist",
-    "hyperapp.d.ts"
+    "ramverk1.d.ts"
   ],
-  "author": "Jorge Bucaran",
   "keywords": [
+    "ramverk1",
     "hyperapp",
     "frontend",
     "framework",
@@ -22,11 +21,9 @@
     "declarative"
   ],
   "scripts": {
-    "test": "jest --coverage --no-cache && tsc -p test/ts",
     "format": "standard --fix"
   },
   "devDependencies": {
-    "jest": "^23.5.0",
     "typescript": "3.0.3",
     "standard": "^14.3.4"
   },
