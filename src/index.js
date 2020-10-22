@@ -36,7 +36,7 @@ export default async (state, actions, view, container) => {
 
       isRecycling = false
 
-      while (lifecycle.length) lifecycle.pop()()
+      while (lifecycle.length) lifecycle.shift()()
     } catch (error) {
       if (wiredActions.errorHandler) {
         wiredActions.errorHandler({ error, functionName: 'render' })
